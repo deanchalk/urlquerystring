@@ -21,8 +21,7 @@ A high-performance, zero-allocation URL query string parser for Rust. This crate
 use urlquerystring::StackQueryParams;
 
 let url = "https://example.com/path?name=John&age=25&city=New%20York";
-let mut params = StackQueryParams::default();
-params.parse_from_url(url);
+let params = StackQueryParams::new(url);
 
 assert_eq!(params.get("name"), Some("John"));
 assert_eq!(params.get("city"), Some("New York")); // Automatically percent-decoded
@@ -46,8 +45,7 @@ This crate is designed for maximum performance:
 use urlquerystring::StackQueryParams;
 
 let url = "https://example.com/path?name=John&age=25";
-let mut params = StackQueryParams::default();
-params.parse_from_url(url);
+let params = StackQueryParams::new(url);
 
 // Access parameters
 assert_eq!(params.get("name"), Some("John"));
@@ -60,8 +58,9 @@ assert_eq!(params.get("age"), Some("25"));
 use urlquerystring::StackQueryParams;
 
 // Create a container with custom size limits
-let mut params = StackQueryParams::<32, 64, 256>::new();
-params.parse_from_url("https://example.com/path?param=value");
+let params = StackQueryParams::<32, 64, 256>::custom_new(
+    "https://example.com/path?param=value"
+);
 ```
 
 ### Iterating Over Parameters
@@ -69,23 +68,22 @@ params.parse_from_url("https://example.com/path?param=value");
 ```rust
 use urlquerystring::StackQueryParams;
 
-let mut params = StackQueryParams::default();
-params.parse_from_url("https://example.com/path?a=1&b=2");
+let params = StackQueryParams::new("https://example.com/path?a=1&b=2");
 
 for (key, value) in params.iter() {
     println!("{} = {}", key, value);
 }
 ```
 
-## Limitations
+## Default Size Limits
 
-Due to the stack-based design, there are some limitations:
+The crate provides default size limits that can be used with the `new()` constructor:
 
-- Maximum number of parameters (default: 16)
-- Maximum key length (default: 32 bytes)
-- Maximum value length (default: 128 bytes)
+- Maximum number of parameters: 16
+- Maximum key length: 32 bytes
+- Maximum value length: 128 bytes
 
-These limits can be customized using const generics if needed.
+These limits can be customized using the `custom_new()` constructor with const generics.
 
 ## When to Use This Crate
 

@@ -1,0 +1,11 @@
+[package]
+name = "urlquerystring"
+version = "0.1.0"
+edition = "2024"
+authors = ["Dean Chalk dean.chalk@gmail.com"]
+description = "A high-performance, zero-allocation URL query string parser."
+license = "MIT"
+repository = "https://github.com/deanchalk/urlquerystring"
+homepage = "https://github.com/deanchalk/urlquerystring"
+
+[dependencies]
